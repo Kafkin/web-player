@@ -1,0 +1,95 @@
+.audioplayer{
+  --progress: 0;
+
+  display: flex; align-items: center; justify-content: center;
+  width: max-content; height: max-content;
+  flex-direction: column; gap: 10px;
+  z-index: 2;
+
+  &__title{
+    filter: invert(50%);
+    font-size: 48px;
+  }
+
+  &__description{
+    filter: invert(50%);
+    margin-bottom: 38px;
+    font-size: 22px;
+    opacity: 80%;
+  }
+
+  &__progress-bar{
+    display: flex; align-items: center; gap: 23px;
+    width: max-content; height: max-content;
+  }
+
+  &__last-time{
+    filter: invert(50%);
+  }
+
+  &__line{
+    // background: map-get($colors, font-d);
+    // width: 420px; height: 3px;
+    // position: relative;
+    // cursor: pointer;
+
+    // &::before{
+    //   width: var(--progress); height: 100%;
+    //   position: absolute; top: 0; left: 0;
+    //   background: map-get($colors, font);
+    //   filter: invert(50%);
+    //   content: '';
+    // }
+
+    // &::after{
+    //   position: absolute; top: 50%; left: var(--progress);
+      // background: map-get($colors, font);
+    //   transform: translateY( -50% );
+    //   width: 9px; height: 9px;
+    //   filter: invert(50%);
+    //   border-radius: 50%;
+    //   content: '';
+    // }
+  }
+
+  &__end-time{
+    filter: invert(50%);
+  }
+
+  &__controller{
+    display: flex; align-items: center; gap: 47px;
+    width: max-content; height: max-content;
+    position: relative;
+  }
+
+  &__icon{
+    filter: invert(50%);
+    cursor: pointer;
+
+    &_small{
+      width: 25px; height: 25px;
+    }
+    
+    &_medium{
+      width: 40px;
+    }
+    
+    &_large{
+      width: 80px;
+    }
+
+    &_reverse{
+      transform: rotate( 180deg );
+    }
+
+    &_favorite{
+      overflow: hidden;
+    }
+
+    &.active{
+      transform: scale( 1.1 );
+    }
+    
+  }
+
+}

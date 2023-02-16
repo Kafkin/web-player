@@ -1,0 +1,19 @@
+$colors: (
+  /* background */ 
+  back-d: #ffffff,
+  back-a: #ffffff,
+  back: #ffffff,
+  
+  /* font color */ 
+  font-d: #efefef72,
+  font-a: #ff7e7e,
+  font: #313131,
+);
+
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);

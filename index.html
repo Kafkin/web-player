@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test application</title>
+
+  <!-- style -->
+  <link rel="stylesheet" href="./styles/css/config.min.css">
+
+  <!-- vue -->
+  <script src="./scripts/app.prod.js" type="module"></script>
+  <script src="./scripts/vue.global.js"></script>
+
+</head>
+<body id="app" v-cloak>
+
+  <div class="lds-roller" v-if="!loader">
+    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+  </div>
+  
+  <audio style="display: none;" ref="audioplayer" preload="metadata" @loadedmetadata="updateProgress" @timeupdate="updateProgress" @ended="setSong( ++audioplayer.current )"></audio>
+  <video v-show="loader" class="videoplayer" loop ref="videoplayer"></video>
+  
+  <article v-show="loader" class="audioplayer" v-show="audioplayer?.song">
+    <h1 class="audioplayer__title">{{ audioplayer.song?.title || 'Empty' }}</h1>
+    <p class="audioplayer__description">{{ audioplayer.song?.description || 'Empty' }}</p>
+
+    <div class="audioplayer__progress-bar">
+      <p class="audioplayer__last-time">{{ toTime( audioplayer?.currentTime ) || 'infinity' }}</p>
+      <input class="line" type="range" min="0" :max="audioplayer?.duration" v-model="audioplayer.currentTime" @mousedown="stopReder = false" @mouseup="setProgress">
+      <p class="audioplayer__end-time">{{ toTime( audioplayer?.duration ) || 'infinity' }}</p>
+    </div>
+
+    <div class="audioplayer__controller">
+      <input class="audioplayer__volume" type="range" min="0" max="100" v-model="currentVolume" orient="vertical" v-show="showVolume">
+      <img class="audioplayer__icon audioplayer__icon_small audioplayer__icon_favorite" src="./assets/icon/favorite.svg" @click="showVolume = !showVolume">
+      <img class="audioplayer__icon audioplayer__icon_medium audioplayer__icon_reverse" src="./assets/icon/next.svg" @click="pauseSong(), pauseVideo(), setSong( audioplayer.repeat ? audioplayer.current -= 2 : audioplayer.current -= 1 )">
+      <img class="audioplayer__icon audioplayer__icon_large" src="./assets/icon/play.svg" v-if="audioplayer.status" @click="playSong(), playVideo()">
+      <img class="audioplayer__icon audioplayer__icon_large" src="./assets/icon/pause.svg" v-else @click="pauseSong(), pauseVideo()">
+      <img class="audioplayer__icon audioplayer__icon_medium" src="./assets/icon/next.svg" @click="pauseSong(), pauseVideo(), setSong( audioplayer.repeat ? audioplayer.current += 2 : audioplayer.current += 1 )">
+      <img class="audioplayer__icon audioplayer__icon_small" src="./assets/icon/reload.svg" @click="audioplayer.repeat = !audioplayer.repeat" :class="{ 'active': audioplayer.repeat }">
+    </div>
+  </article>
