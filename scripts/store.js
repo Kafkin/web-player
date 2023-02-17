@@ -1,7 +1,7 @@
 export default {
   
   currentTimeOnLine: 0,
-  showListSong: true,
+  showListSong: false,
   currentVolume: 75,
   showVolume: false,
   firstLoad: false,
