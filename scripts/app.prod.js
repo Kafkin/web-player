@@ -11,14 +11,6 @@ Vue
       currentVolume( nv, ov ) {
         this.$refs.audioplayer.volume = nv / 100
       },
-
-      'audioplayer.repeat'( nv, ov ) {
-        console.log( 'repeat:', nv );
-      },
-
-      'audioplayer.current'( nv, ov ) {
-        console.log( 'current:', nv );
-      }
     },
 
     methods: {
@@ -39,7 +31,6 @@ Vue
         let data = this.songs.at( this.audioplayer.current )
 
         if( !data ) {
-          console.log( 'data is not defined' );
           this.audioplayer.current = 0
           data = this.songs.at( 0 )
         }
