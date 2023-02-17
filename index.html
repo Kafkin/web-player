@@ -67,6 +67,8 @@
     </div>
   </Transition>
 
+  <p style="z-index: 999999; position: absolute; top: 500px; left: 500; color: #fff;">{{ showListSong }}</p>
+
   <div 
     @click="showListSong = !showListSong"
     :class="['btn btn_burger', { active: showListSong }]"
