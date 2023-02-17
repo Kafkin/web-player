@@ -11,15 +11,35 @@ Vue
       currentVolume( nv, ov ) {
         this.$refs.audioplayer.volume = nv / 100
       },
+
+      'audioplayer.repeat'( nv, ov ) {
+        console.log( 'repeat:', nv );
+      },
+
+      'audioplayer.current'( nv, ov ) {
+        console.log( 'current:', nv );
+      }
     },
 
     methods: {
-      async setSong( songIndex ){
-        this.loader = false
+      async setSong( command ){
+        if( this.audioplayer.repeat === this.audioplayer.current ) {
+          this.loader = true
 
-        if( this.audioplayer.repeat ) this.audioplayer.current -= 1
+          this.$refs.videoplayer.load()
+          this.$refs.videoplayer.load()
+          this.playVideo()
+          this.playSong()
+          
+          return
+        }
+
+        this.loader = false
+        
         let data = this.songs.at( this.audioplayer.current )
+
         if( !data ) {
+          console.log( 'data is not defined' );
           this.audioplayer.current = 0
           data = this.songs.at( 0 )
         }

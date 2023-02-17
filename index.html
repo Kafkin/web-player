@@ -21,7 +21,7 @@
     <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
   </div>
   
-  <audio style="display: none;" ref="audioplayer" preload="metadata" @loadedmetadata="updateProgress" @timeupdate="updateProgress" @ended="setSong( ++audioplayer.current )"></audio>
+  <audio style="display: none;" ref="audioplayer" preload="metadata" @loadedmetadata="updateProgress" @timeupdate="updateProgress" @ended="audioplayer.repeat !== audioplayer.current && audioplayer.current++, setSong()"></audio>
   <video v-show="loader" class="videoplayer" loop ref="videoplayer"></video>
   
   <article v-show="loader" class="audioplayer" v-show="audioplayer?.song">
@@ -35,12 +35,12 @@
     </div>
 
     <div class="audioplayer__controller">
-      <input class="audioplayer__volume" type="range" min="0" max="100" v-model="currentVolume" orient="vertical" v-show="showVolume">
+      <input class="audioplayer__volume" type="range" min="0" max="100" v-model="currentVolume" v-show="showVolume">
       <img class="audioplayer__icon audioplayer__icon_small audioplayer__icon_favorite" src="./assets/icon/favorite.svg" @click="showVolume = !showVolume">
-      <img class="audioplayer__icon audioplayer__icon_medium audioplayer__icon_reverse" src="./assets/icon/next.svg" @click="pauseSong(), pauseVideo(), setSong( audioplayer.repeat ? audioplayer.current -= 2 : audioplayer.current -= 1 )">
+      <img class="audioplayer__icon audioplayer__icon_medium audioplayer__icon_reverse" src="./assets/icon/next.svg" @click="pauseSong(), pauseVideo(), --audioplayer.current, setSong(), audioplayer.repeat !== false && (audioplayer.repeat = audioplayer.current)">
       <img class="audioplayer__icon audioplayer__icon_large" src="./assets/icon/play.svg" v-if="audioplayer.status" @click="playSong(), playVideo()">
       <img class="audioplayer__icon audioplayer__icon_large" src="./assets/icon/pause.svg" v-else @click="pauseSong(), pauseVideo()">
-      <img class="audioplayer__icon audioplayer__icon_medium" src="./assets/icon/next.svg" @click="pauseSong(), pauseVideo(), setSong( audioplayer.repeat ? audioplayer.current += 2 : audioplayer.current += 1 )">
-      <img class="audioplayer__icon audioplayer__icon_small" src="./assets/icon/reload.svg" @click="audioplayer.repeat = !audioplayer.repeat" :class="{ 'active': audioplayer.repeat }">
+      <img class="audioplayer__icon audioplayer__icon_medium" src="./assets/icon/next.svg" @click="pauseSong(), pauseVideo(), ++audioplayer.current, setSong(), audioplayer.repeat !== false && (audioplayer.repeat = audioplayer.current)">
+      <img class="audioplayer__icon audioplayer__icon_small" src="./assets/icon/reload.svg" @click="audioplayer.repeat === audioplayer.current ? ( audioplayer.repeat = false ) : ( audioplayer.repeat = audioplayer.current )" :class="{ 'active': audioplayer.repeat || audioplayer.repeat === 0 }">
     </div>
   </article>
