@@ -44,3 +44,34 @@
       <img class="audioplayer__icon audioplayer__icon_small" src="./assets/icon/reload.svg" @click="audioplayer.repeat === audioplayer.current ? ( audioplayer.repeat = false ) : ( audioplayer.repeat = audioplayer.current )" :class="{ 'active': audioplayer.repeat || audioplayer.repeat === 0 }">
     </div>
   </article>
+
+  <Transition name="list">
+    <div class="song-list" v-if="showListSong">
+      <p 
+        @click="loader && ( 
+          clearSong(), 
+          clearVideo(), 
+          pauseSong(), 
+          pauseVideo(), 
+          audioplayer.current = index, 
+          setSong(), 
+          audioplayer.repeat !== false && (audioplayer.repeat = audioplayer.current) )
+        "
+        :class="['song-list__item', { 'active': index === audioplayer.current }]"
+        v-for="( el, index ) in songs" :key="index"
+      >
+        {{ index + 1 }}. {{ el.title }} {{ el.description }}
+      </p>
+  
+      <p class="song-list__alert-text">{{ alertText  }}</p>
+    </div>
+  </Transition>
+
+  <div 
+    @click="showListSong = !showListSong"
+    :class="['btn btn_burger', { active: showListSong }]"
+  >
+    <div class="btn__item"></div>
+    <div class="btn__item"></div>
+    <div class="btn__item"></div>
+  </div>

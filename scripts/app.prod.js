@@ -75,6 +75,16 @@ Vue
         this.$refs.videoplayer.pause()
       },
 
+      clearSong() {
+        this.firstLoad = false
+        this.$refs.audioplayer.src = '#'
+      },
+      
+      clearVideo() {
+        this.firstLoad = false
+        this.$refs.videoplayer.src = '#'
+      },
+
       updateProgress() {
         if( this.stopReder ) {
           const { duration, currentTime } = this.$refs.audioplayer
@@ -105,7 +115,9 @@ Vue
     },
 
     computed: {
-
+      alertText() {
+        return this.loader ? 'Файлы подгруженны, можете переключить трек' : 'Файлы подгружаються, переключить трек нельзя'
+      }
     },
 
     components: { 

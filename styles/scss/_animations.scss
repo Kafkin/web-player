@@ -2,3 +2,13 @@
   from { filter: hue-rotate( 0deg ); }
   to { filter: hue-rotate( 360deg ); }
 }
+
+@keyframes showList{
+  from { left: -400px; }
+  to { left: 0px; }
+}
+
+@keyframes hiddenList{
+  from { left: 0px; }
+  to { left: -400px; }
+}

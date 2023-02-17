@@ -1,0 +1,54 @@
+.song-list{
+  display: flex; align-items: flex-start;
+  position: absolute; top: 0; left: 0;
+  flex-direction: column; gap: 3px;
+  padding: 30px 30px 60px 30px;
+  width: 400px; height: 100%;
+  scrollbar-width: none;
+  overflow-y: scroll;
+  z-index: 9999;
+
+  &__item{
+    width: 100%; height: max-content;
+    color: map-get($colors, back);
+    transition: 0.15s ease-in-out;
+    overflow: hidden;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px;
+    
+    &:hover{
+      background: map-get($colors, font-d);
+      border-color: map-get($colors, font);
+      color: map-get($colors, font);
+      transform: scale( 1.05 );
+    }
+    
+    &.active{
+      animation: rainbowColor 2s linear infinite;
+      color: map-get($colors, back) !important;
+      box-shadow: 0 0 9px rgb(68, 68, 189);
+      background: rgb(68, 68, 189);
+    }
+  }
+
+  &__alert-text{
+    position: absolute; bottom: 30px; left: 30px;
+    color: map-get($colors, back);
+    filter: invert(50%);
+    margin-top: auto;
+    font-size: 14px;
+  }
+}
+
+.song-list::-webkit-scrollbar{
+  width: 0px;
+}
+
+.list-enter-active{
+  animation: showList 0.9s cubic-bezier( .1, .1, .1, .9 );
+}
+
+.list-leave-active{
+  animation: hiddenList 0.9s cubic-bezier( .1, .1, .1, .9 );
+}
