@@ -48,7 +48,7 @@
   <Transition name="list">
     <div class="song-list" v-if="showListSong">
       <p 
-        @click="loader && ( 
+        @click="(loader && audioplayer.current !== index ) && ( 
           clearSong(), 
           clearVideo(), 
           pauseSong(), 
