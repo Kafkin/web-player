@@ -30,16 +30,48 @@ Vue
           cancelAnimationFrame( this.loop )
           this.loop()
         }
-      }
+      },
+
+      'videoDisabled'( nv, ov ){
+        localStorage.setItem( 'videoDisabled', JSON.stringify(nv) )
+      },
+      
+      'audioplayer.current'( nv, ov ){
+        localStorage.setItem( 'current-song', JSON.stringify(nv) )
+      },
     },
 
     methods: {
-      async setSong( command ){
+      async setSong(){
+        if( !this.videoDisabled && this.audioplayer.repeat === this.audioplayer.current ) {
+          this.loader = false
+
+          const src = this.$refs.videoplayer.src
+          if( src[src.length - 1] === '/' || src[src.length - 1] === '#' ) {
+            console.log( 'video src empty' );
+            let data = this.songs.at( this.audioplayer.current )
+            await post( 'https://serega-test.ru/api/uploading-file-api/video', { id: data.id }, async ( data ) => {
+              this.$refs.videoplayer.src = URL.createObjectURL( await data.blob() )
+              this.loader = true
+            })
+          }
+          
+          this.loader = true
+          this.$refs.videoplayer.load()
+          this.$refs.audioplayer.load()
+          this.playVideo()
+          this.playSong()
+
+          this.audioplayer.status = false
+          
+          return
+        }
+
         if( this.audioplayer.repeat === this.audioplayer.current ) {
           this.loader = true
 
           this.$refs.videoplayer.load()
-          this.$refs.videoplayer.load()
+          this.$refs.audioplayer.load()
           this.playVideo()
           this.playSong()
           
@@ -107,7 +139,7 @@ Vue
       },
       
       clearVideo() {
-        if( this.videoDisabled ) return
+        // if( !this.videoDisabled ) return
 
         this.firstLoad = false
         this.$refs.videoplayer.src = '#'
@@ -153,6 +185,12 @@ Vue
           el.style.height = `${ this.arr[ index ] }px`
         })
       },
+
+      resetLine() {
+        this.$refs.line.forEach( el => {
+          el.style.height = `0px`
+        })
+      }
     },
 
     computed: {
@@ -170,18 +208,21 @@ Vue
     },
 
     async created() {
+      this.videoDisabled = JSON.parse(localStorage.getItem( 'videoDisabled' )) || false
+      this.audioplayer.current = JSON.parse(localStorage.getItem( 'current-song' )) || 0
+
       this.quantityLine = Math.floor( window.innerWidth / 3 )
 
       window.addEventListener( 'resize', () => {
         this.quantityLine = Math.floor( window.innerWidth / 3 )
       })
-
-      await post( 'https://serega-test.ru/api/uploading-file-api/all', null, async ( data ) => {
-        this.songs = await data.json(); this.setSong( this.songs.at( 0 ).id )
-      })
-
-      this.loopHue()
     },
+
+    async mounted() {
+      await post( 'https://serega-test.ru/api/uploading-file-api/all', null, async ( data ) => {
+        this.songs = await data.json(); this.setSong( this.songs.at( this.audioplayer.current ).id )
+      })
+    }
 
   })
   .mount( '#app' )
