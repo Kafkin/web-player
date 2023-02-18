@@ -33,11 +33,21 @@
   }
 
   &__alert-text{
-    position: absolute; bottom: 30px; left: 30px;
+    position: absolute; bottom: 57px; left: 30px;
     color: map-get($colors, back);
     filter: invert(50%);
     margin-top: auto;
     font-size: 14px;
+
+    &_db{
+      transition: 0.2 ease-in-out;
+      bottom: 30px; left: 30px;
+      cursor: pointer;
+
+      &:hover{
+        filter: drop-shadow( 0 0 29px #fff );
+      }
+    }
   }
 }
 

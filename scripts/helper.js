@@ -1,6 +1,6 @@
-const post = async ( url, data = null, callback ) => {
+const post = async ( url, data = null, callback, ct = 'application/json' ) => {
   const res = await fetch( url, {
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': ct },
     body: JSON.stringify( data ),
     method: 'POST'
   })

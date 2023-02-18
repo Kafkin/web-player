@@ -20,9 +20,13 @@
   <div class="lds-roller" v-if="!loader">
     <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
   </div>
-  
+
+  <div class="container-line" v-if="loader && videoDisabled">
+    <div class="container-line__line" ref="line" v-for="el in quantityLine" :key="el"></div>
+  </div>
+
   <audio style="display: none;" ref="audioplayer" preload="metadata" @loadedmetadata="updateProgress" @timeupdate="updateProgress" @ended="audioplayer.repeat !== audioplayer.current && audioplayer.current++, setSong()"></audio>
-  <video v-show="loader" class="videoplayer" loop ref="videoplayer"></video>
+  <video v-show="loader && !videoDisabled" class="videoplayer" loop ref="videoplayer"></video>
   
   <article v-show="loader" class="audioplayer" v-show="audioplayer?.song">
     <h1 class="audioplayer__title">{{ audioplayer.song?.title || 'Empty' }}</h1>
@@ -49,10 +53,10 @@
     <div class="song-list" v-if="showListSong">
       <p 
         @click="(loader && audioplayer.current !== index ) && ( 
-          clearSong(), 
-          clearVideo(), 
           pauseSong(), 
           pauseVideo(), 
+          clearSong(), 
+          clearVideo(), 
           audioplayer.current = index, 
           setSong(), 
           audioplayer.repeat !== false && (audioplayer.repeat = audioplayer.current) )
@@ -63,7 +67,19 @@
         {{ index + 1 }}. {{ el.title }} {{ el.description }}
       </p>
   
-      <p class="song-list__alert-text">{{ alertText  }}</p>
+      <p class="song-list__alert-text">{{ alertText }}</p>
+      <p 
+        class="song-list__alert-text song-list__alert-text_db" 
+        @click="loader && (
+          videoDisabled = !videoDisabled,
+          pauseSong(),
+          pauseVideo(),
+          clearSong(), 
+          clearVideo(), 
+          setSong()
+        )
+        "
+      >{{ alertTextVideo }}</p>
     </div>
   </Transition>
 

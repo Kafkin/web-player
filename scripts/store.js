@@ -8,6 +8,17 @@ export default {
   stopReder: true,
   loader: false,
 
+  hue: 0,
+
+  videoDisabled: false,
+  quantityLine: 0,
+
+  analyser: null,
+  context: null,
+  src: null,
+  line: null,
+  arr: null,
+
   audioplayer: {
     path: './assets/music',
     current: 0,
